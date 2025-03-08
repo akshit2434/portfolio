@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+/* Remove focus outlines for touch devices */
+@media (hover: none) and (pointer: coarse) {
+    a:focus,
+    button:focus {
+        outline: none;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+
+    button:active,
+    a:active {
+        background-color: transparent;
+    }
+}
+
+/* Disable text selection for interactive elements */
+button,
+.nav-links a,
+.mobile-nav-links a,
+.github-link {
+    user-select: none;
+}
+
+.hero-name {
+    font-family: "Playfair Display", serif;
+    letter-spacing: -0.02em;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--accent-color);
+}
+
+.section-text {
+    line-height: 1.8;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.particles-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.noise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+}
+
+.noise svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+}
