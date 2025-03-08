@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="logo">
-        <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Portfolio</span>
+        <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Akshit2434</span>
       </div>
       <ul className="nav-links">
         <li><a href="#home">Home</a></li>

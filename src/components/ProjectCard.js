@@ -8,8 +8,14 @@ export default function ProjectCard({ project }) {
   return (
     <div
       className={`project-card ${isHovered ? 'hovered' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        window.dispatchEvent(new CustomEvent('projectHover', { detail: { project } }));
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        window.dispatchEvent(new CustomEvent('projectHover', { detail: { project: null } }));
+      }}
       style={{
         background: 'var(--glass-bg)',
         borderRadius: '15px',

@@ -231,7 +231,7 @@ const Particles = () => {
       ref={canvasRef}
       className="particles-canvas"
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: 0,
         width: '100vw',

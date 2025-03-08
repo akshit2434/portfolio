@@ -79,9 +79,9 @@ export default function HeroSection() {
       <div className="hero-content">
         <div className="hero-text-content">
           <div style={{ overflow: 'hidden' }}>
-            <h1 
+            <h1
               ref={textRefs.heading}
-              className="hero-text" 
+              className="hero-text hero-name"
               style={{
                 opacity: 0,
                 color: 'var(--text-color)',
@@ -90,7 +90,7 @@ export default function HeroSection() {
                 lineHeight: 1.2
               }}
             >
-              Hi, I&apos;m Akshit Kumar Singh
+              Hi, I&apos;m Akshit Kumar Singh!
             </h1>
           </div>
           
@@ -106,7 +106,7 @@ export default function HeroSection() {
                 lineHeight: 1.6
               }}
             >
-              CSE student at JIIT exploring AI Technologies and RAG Agents. Passionate about development, from web apps to AI workflows.
+              CSE student at JIIT and Co Head Tech at <a href="https://insturance.org" target="_blank" style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>insturance</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
             </p>
           </div>
 
@@ -195,6 +195,7 @@ export default function HeroSection() {
               <img
                 src="/dp.png"
                 alt="Profile"
+                draggable="false"
                 style={{
                   width: '100%',
                   height: '100%',

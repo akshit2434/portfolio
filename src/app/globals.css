@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap");
+
 :root {
   --bg-color: #0a0a0a;
   --text-color: #ffffff;
@@ -30,6 +32,11 @@ body {
   min-height: 100vh;
   width: 100%;
   position: relative;
+}
+
+.hero-name {
+  font-family: "Playfair Display", serif;
+  letter-spacing: -0.02em;
 }
 
 .custom-cursor {
@@ -305,6 +312,43 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.custom-cursor.project-hover {
+  width: 15px;
+  height: 15px;
+  opacity: 0.5;
+  mix-blend-mode: normal;
+}
+
+.project-preview {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: var(--glass-bg);
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  transform-origin: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition: all 0.2s ease-out;
+}
+
+.project-preview.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.project-preview img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -377,7 +421,7 @@ body {
 }
 
 .particles-canvas {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -387,7 +431,7 @@ body {
 }
 
 .noise {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
