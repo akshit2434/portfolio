@@ -10,6 +10,27 @@
 
 html {
     scroll-behavior: smooth;
+    --enable-animations: 0;
+}
+
+/* Hide content during loading */
+.loading {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+}
+
+/* Show content when loading completes */
+.loading-complete {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    position: relative;
+    transition:
+        opacity 0.8s ease-out,
+        visibility 0s;
+    transition-delay: 0.3s;
 }
 
 body {

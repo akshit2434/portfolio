@@ -39,7 +39,13 @@ const Cursor = () => {
 
     const updateCursor = (e) => {
       const target = e.target;
-      setIsPointer(window.getComputedStyle(target).cursor === 'pointer');
+      const isTargetPointer = window.getComputedStyle(target).cursor === 'pointer';
+      
+      // Only update if the pointer state actually changed
+      if (isTargetPointer !== isPointer) {
+        setIsPointer(isTargetPointer);
+      }
+
       targetRef.current = { x: e.clientX, y: e.clientY };
       setMoving(true);
       

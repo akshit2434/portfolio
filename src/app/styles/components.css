@@ -213,7 +213,8 @@
     margin: 0 auto;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards paused;
+    animation-play-state: var(--enable-animations, paused);
 }
 
 .hero-text-content {
@@ -274,7 +275,8 @@
     letter-spacing: -0.02em;
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards paused;
+    animation-play-state: var(--enable-animations, paused);
 }
 
 .hero-subtext {
@@ -283,7 +285,8 @@
     max-width: 600px;
     line-height: 1.5;
     transform: translateY(20px);
-    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards paused;
+    animation-play-state: var(--enable-animations, paused);
 }
 
 /* Section Styles */
@@ -420,6 +423,57 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
+}
+
+/* Loader Styles */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    background-color: var(--bg-color);
+}
+
+.loader-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-percentage {
+    font-family: var(--font-playfair);
+    font-size: clamp(5rem, 20vw, 16rem);
+    color: var(--text-color);
+    opacity: 0.95;
+    position: relative;
+    text-align: center;
+    min-width: 3ch;
+}
+
+.loader-percentage::after {
+    content: "%";
+    font-family: var(--font-playfair);
+    font-size: 0.3em;
+    position: absolute;
+    top: 0.4em;
+    right: -0.6em;
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .loader-content {
+        padding: 2rem 3rem;
+        border-radius: 20px;
+    }
+
+    .loader-content::before {
+        border-radius: 20px;
+    }
 }
 
 /* Custom Cursor Styles */
