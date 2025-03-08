@@ -26,7 +26,7 @@ const graphData = {
     
     { id: 'DSA', group: 'other', val: 11, x: 0.15, y: 0.4 },
     { id: 'System Design', group: 'other', val: 11, x: 0.1, y: 0.5 },
-    { id: 'Three.js', group: 'other', val: 10, x: 0.05, y: 0.6 },
+    { id: 'JS Libraries', group: 'other', val: 10, x: 0.05, y: 0.6 },
     { id: 'Git/GitHub', group: 'other', val: 10, x: 0.1, y: 0.7 },
     { id: 'C++', group: 'other', val: 11, x: 0.15, y: 0.8 },
   ],
@@ -47,7 +47,7 @@ const graphData = {
     
     { source: 'Other', target: 'DSA', value: 1 },
     { source: 'Other', target: 'System Design', value: 1 },
-    { source: 'Other', target: 'Three.js', value: 1 },
+    { source: 'Other', target: 'JS Libraries', value: 1 },
     { source: 'Other', target: 'Git/GitHub', value: 1 },
     { source: 'Other', target: 'C++', value: 1 },
     
@@ -55,7 +55,7 @@ const graphData = {
     { source: 'JavaScript', target: 'Node.js', value: 0.5 },
     { source: 'Python', target: 'LangChain', value: 0.5 },
     { source: 'Python', target: 'LLMs', value: 0.5 },
-    { source: 'JavaScript', target: 'Three.js', value: 0.5 },
+    { source: 'JavaScript', target: 'JS Libraries', value: 0.5 },
   ]
 };
 
@@ -104,9 +104,12 @@ export default function ForceGraphSkills() {
       .join('g');
 
     const getRadius = (d) => {
-      if (d.group === 'category') return 50;
+      const isMobile = width < 768;
+      const scaleFactor = isMobile ? 0.75 : 1;
+      
+      if (d.group === 'category') return 50 * scaleFactor;
       const textLength = d.id.length;
-      return Math.max(35, textLength * 4.5);
+      return Math.max(35, textLength * 4.5) * scaleFactor;
     };
 
     nodes.append('circle')
@@ -160,7 +163,13 @@ export default function ForceGraphSkills() {
       .text(d => d.id)
       .attr('text-anchor', 'middle')
       .attr('fill', '#fff')
-      .style('font-size', d => d.group === 'category' ? '15px' : '13px')
+      .style('font-size', d => {
+        const isMobile = width < 768;
+        if (d.group === 'category') {
+          return isMobile ? '13px' : '15px';
+        }
+        return isMobile ? '11px' : '13px';
+      })
       .style('font-weight', d => d.group === 'category' ? '600' : '500')
       .style('pointer-events', 'none')
       .call(wrapText, 70);
@@ -168,9 +177,14 @@ export default function ForceGraphSkills() {
     const simulation = d3.forceSimulation(graphData.nodes)
       .force('link', d3.forceLink(graphData.links)
         .id(d => d.id)
-        .distance(140))
+        .distance(width < 768 ? 100 : 140))
       .force('charge', d3.forceManyBody()
-        .strength(d => d.group === 'category' ? -500 : -200))
+        .strength(d => {
+          const isMobile = width < 768;
+          return d.group === 'category'
+            ? (isMobile ? -375 : -500)
+            : (isMobile ? -150 : -200);
+        }))
       .force('collide', d3.forceCollide().radius(d => getRadius(d) + 15))
       .force('center', d3.forceCenter(width / 2, height / 2));
 

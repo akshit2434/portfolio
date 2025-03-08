@@ -7,6 +7,8 @@ import Particles from '../components/Particles';
 import HeroSection from '../components/HeroSection';
 import AboutSection from '../components/AboutSection';
 import ProjectsSection from '../components/ProjectsSection';
+import ContactSection from '../components/ContactSection';
+import MobileProjectPreview from '../components/MobileProjectPreview';
 
 export default function Home() {
   return (
@@ -19,7 +21,9 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <ProjectsSection />
+        <ContactSection />
       </main>
+      <MobileProjectPreview />
     </>
   );
 }

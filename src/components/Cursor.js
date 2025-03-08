@@ -27,7 +27,7 @@ const Cursor = () => {
       positionRef.current.y = lerp(positionRef.current.y, targetRef.current.y, easeFactor);
 
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`;
+        cursorRef.current.style.transform = `translate(calc(${positionRef.current.x}px - 50%), calc(${positionRef.current.y}px - 50%))`;
       }
 
       if (previewRef.current) {
@@ -91,9 +91,6 @@ const Cursor = () => {
         className={`custom-cursor ${clicked ? 'clicked' : ''} ${
           isPointer ? 'pointer' : ''
         } ${moving ? 'moving' : ''} ${hoveredProject ? 'project-hover' : ''}`}
-        style={{
-          transform: `translate(${positionRef.current.x}px, ${positionRef.current.y}px)`
-        }}
       />
       <div
         ref={previewRef}

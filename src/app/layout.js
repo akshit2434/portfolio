@@ -1,4 +1,5 @@
 import './globals.css';
+import { ThemeProvider } from '../context/ThemeContext';
 
 export const metadata = {
   title: 'Akshit | Portfolio',
@@ -8,7 +9,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}>{children}</body>
+      <body suppressHydrationWarning={true}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -4,18 +4,30 @@ import { useState } from 'react';
 
 export default function ProjectCard({ project }) {
   const [isHovered, setIsHovered] = useState(false);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  const handleInteraction = () => {
+    if (isMobile) {
+      window.dispatchEvent(new CustomEvent('projectTap', { detail: { project } }));
+    } else {
+      setIsHovered(true);
+      window.dispatchEvent(new CustomEvent('projectHover', { detail: { project } }));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) {
+      setIsHovered(false);
+      window.dispatchEvent(new CustomEvent('projectHover', { detail: { project: null } }));
+    }
+  };
 
   return (
     <div
       className={`project-card ${isHovered ? 'hovered' : ''}`}
-      onMouseEnter={() => {
-        setIsHovered(true);
-        window.dispatchEvent(new CustomEvent('projectHover', { detail: { project } }));
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        window.dispatchEvent(new CustomEvent('projectHover', { detail: { project: null } }));
-      }}
+      onClick={handleInteraction}
+      onMouseEnter={handleInteraction}
+      onMouseLeave={handleMouseLeave}
       style={{
         background: 'var(--glass-bg)',
         borderRadius: '15px',

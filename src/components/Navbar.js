@@ -1,33 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import DesktopNavbar from './DesktopNavbar';
+import MobileNavbar from './MobileNavbar';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const heroHeight = window.innerHeight - 80; // Viewport height minus navbar height
-      setIsScrolled(window.scrollY > heroHeight * 0.3);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
-  return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="logo">
-        <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Akshit2434</span>
-      </div>
-      <ul className="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  );
+  return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
 };
 
 export default Navbar;
