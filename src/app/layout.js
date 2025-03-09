@@ -5,6 +5,7 @@ import Loader from '../components/Loader';
 import { Playfair_Display } from 'next/font/google';
 import { metadata } from './metadata';
 import { Content } from '../components/Content';
+import { Analytics } from "@vercel/analytics/react"
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
             <Content>{children}</Content>
           </ThemeProvider>
         </LoadingProvider>
+        <Analytics />
       </body>
     </html>
   );
