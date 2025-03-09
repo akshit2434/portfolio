@@ -8,6 +8,7 @@ const Cursor = () => {
   const [moving, setMoving] = useState(false);
   const [hoveredProject, setHoveredProject] = useState(null);
   const [lastImage, setLastImage] = useState('');
+  const [hidden, setHidden] = useState(false);
   const cursorRef = useRef(null);
   const previewRef = useRef(null);
   const positionRef = useRef({ x: 0, y: 0 });
@@ -17,17 +18,19 @@ const Cursor = () => {
 
   useEffect(() => {
     let moveTimeout;
+    let lastTarget = null;
 
     const lerp = (start, end, factor) => start + (end - start) * factor;
     
     const animate = () => {
-      const easeFactor = 0.15;
+      const easeFactor = clicked ? 0.25 : 0.15;
       
       positionRef.current.x = lerp(positionRef.current.x, targetRef.current.x, easeFactor);
       positionRef.current.y = lerp(positionRef.current.y, targetRef.current.y, easeFactor);
 
+      const transform = `translate(calc(${positionRef.current.x}px - 50%), calc(${positionRef.current.y}px - 50%))`;
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(calc(${positionRef.current.x}px - 50%), calc(${positionRef.current.y}px - 50%))`;
+        cursorRef.current.style.transform = transform;
       }
 
       if (previewRef.current) {
@@ -37,29 +40,23 @@ const Cursor = () => {
       frameRef.current = requestAnimationFrame(animate);
     };
 
-    const updateCursor = (e) => {
-      const target = e.target;
-      const isTargetPointer = window.getComputedStyle(target).cursor === 'pointer';
-      
-      // Only update if the pointer state actually changed
+    const handleMouseMove = (e) => {
+      targetRef.current = { x: e.clientX, y: e.clientY };
+      setMoving(true);
+      clearTimeout(moveTimeout);
+      moveTimeout = setTimeout(() => setMoving(false), 100);
+
+      const isTargetPointer = window.getComputedStyle(e.target).cursor === 'pointer';
       if (isTargetPointer !== isPointer) {
         setIsPointer(isTargetPointer);
       }
-
-      targetRef.current = { x: e.clientX, y: e.clientY };
-      setMoving(true);
-      
-      clearTimeout(moveTimeout);
-      moveTimeout = setTimeout(() => setMoving(false), 100);
     };
 
     const handleMouseDown = () => setClicked(true);
-    const handleMouseUp = () => {
-      setClicked(false);
-      setMoving(true);
-      clearTimeout(moveTimeout);
-      moveTimeout = setTimeout(() => setMoving(false), 100);
-    };
+    const handleMouseUp = () => setClicked(false);
+
+    const handleHideCursor = () => setHidden(true);
+    const handleShowCursor = () => setHidden(false);
 
     const handleProjectHover = (e) => {
       if (e.detail?.project) {
@@ -75,18 +72,34 @@ const Cursor = () => {
     };
 
     frameRef.current = requestAnimationFrame(animate);
-    window.addEventListener('mousemove', updateCursor);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
     window.addEventListener('projectHover', handleProjectHover);
+    window.addEventListener('hide-cursor', handleHideCursor);
+    window.addEventListener('show-cursor', handleShowCursor);
+
+    const handleMouseLeave = () => {
+      setClicked(false);
+      setIsPointer(false);
+      setMoving(false);
+      setHidden(false);
+    };
+    
+    window.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       cancelAnimationFrame(frameRef.current);
-      window.removeEventListener('mousemove', updateCursor);
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('projectHover', handleProjectHover);
+      window.removeEventListener('hide-cursor', handleHideCursor);
+      window.removeEventListener('show-cursor', handleShowCursor);
+      window.removeEventListener('mouseleave', handleMouseLeave);
       clearTimeout(moveTimeout);
+      clearTimeout(fadeTimeoutRef.current);
     };
   }, []);
 
@@ -96,7 +109,9 @@ const Cursor = () => {
         ref={cursorRef}
         className={`custom-cursor ${clicked ? 'clicked' : ''} ${
           isPointer ? 'pointer' : ''
-        } ${moving ? 'moving' : ''} ${hoveredProject ? 'project-hover' : ''}`}
+        } ${moving ? 'moving' : ''} ${hoveredProject ? 'project-hover' : ''} ${
+          hidden ? 'hidden' : ''
+        }`}
       />
       <div
         ref={previewRef}

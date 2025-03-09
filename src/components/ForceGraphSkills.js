@@ -112,14 +112,20 @@ export default function ForceGraphSkills() {
       return Math.max(35, textLength * 4.5) * scaleFactor;
     };
 
-    nodes.append('circle')
+    const circles = nodes.append('circle')
       .attr('r', getRadius)
       .attr('fill', d => getColorByGroup(d.group))
       .attr('fill-opacity', d => d.group === 'category' ? 1 : 0.25)
       .attr('stroke', d => getColorByGroup(d.group))
       .attr('stroke-width', 2)
       .attr('stroke-opacity', 0.8)
-      .style('cursor', 'grab');
+      .style('cursor', 'grab')
+      .on('mousedown.cursor', function() {
+        d3.select(this).style('cursor', 'grabbing');
+      })
+      .on('mouseup.cursor', function() {
+        d3.select(this).style('cursor', 'grab');
+      });
 
     const wrapText = (text, width) => {
       text.each(function() {
@@ -193,7 +199,7 @@ export default function ForceGraphSkills() {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
-        d3.select(event.sourceEvent.target).style('cursor', 'grabbing');
+        window.dispatchEvent(new CustomEvent('hide-cursor'));
       })
       .on('drag', (event, d) => {
         d.fx = Math.max(getRadius(d), Math.min(width - getRadius(d), event.x));
@@ -204,7 +210,7 @@ export default function ForceGraphSkills() {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = null;
         d.fy = null;
-        d3.select(event.sourceEvent.target).style('cursor', 'grab');
+        window.dispatchEvent(new CustomEvent('show-cursor'));
       });
 
     nodes.call(drag);
