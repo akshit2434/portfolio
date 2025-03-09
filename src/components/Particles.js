@@ -2,11 +2,26 @@
 
 import { useEffect, useRef } from 'react';
 
+const isTouchDevice = () => {
+  if (typeof window === 'undefined') return false;
+  return ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0);
+};
+
 const Particles = () => {
   const canvasRef = useRef(null);
   const scrollRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0 });
   const scaleRef = useRef(1);
+  const isTouchRef = useRef(false);
+
+  useEffect(() => {
+    // Check for touch device after mount
+    isTouchRef.current = ('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0) ||
+      (navigator.msMaxTouchPoints > 0);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,6 +34,14 @@ const Particles = () => {
       const viewportHeight = document.documentElement.clientHeight;
       const scale = window.devicePixelRatio || 1;
       
+      console.log('[Particles] Resize:', {
+        viewportWidth,
+        viewportHeight,
+        devicePixelRatio: scale,
+        canvasWidth: viewportWidth * scale,
+        canvasHeight: viewportHeight * scale
+      });
+      
       canvas.width = viewportWidth * scale;
       canvas.height = viewportHeight * scale;
       canvas.style.width = viewportWidth + 'px';
@@ -28,9 +51,18 @@ const Particles = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       // Apply new scale
       ctx.scale(scale, scale);
+      
+      console.log('[Particles] Canvas style:', {
+        width: canvas.style.width,
+        height: canvas.style.height,
+        actualWidth: canvas.width,
+        actualHeight: canvas.height
+      });
     };
 
     const handleMouseMove = (e) => {
+      if (isTouchRef.current) return;  // Skip mouse tracking on touch devices
+      
       const viewportWidth = document.documentElement.clientWidth;
       const viewportHeight = document.documentElement.clientHeight;
       mouseRef.current = {
@@ -42,13 +74,19 @@ const Particles = () => {
     class Particle {
       constructor(layer) {
         this.layer = layer;
+        const isMobile = isTouchDevice();
         this.reset(true);
-        this.baseOpacity = this.layer === 0 ? 0.5 :
-                          this.layer === 1 ? 0.3 : 0.15;
+        
+        // Increased base opacity for mobile
+        const opacityMultiplier = isMobile ? 1.5 : 1;
+        this.baseOpacity = (this.layer === 0 ? 0.5 :
+                          this.layer === 1 ? 0.3 : 0.15) * opacityMultiplier;
         this.opacity = this.baseOpacity;
         this.perspective = (3 - this.layer) * 15;
         this.color = this.generateColor();
-        this.speed = Math.random() * 0.2 + 0.1;
+        
+        // Slower animation on mobile for better performance
+        this.speed = (Math.random() * 0.2 + 0.1) * (isMobile ? 0.7 : 1);
       }
 
       generateColor() {
@@ -61,16 +99,28 @@ const Particles = () => {
       reset(isInit = false) {
         const viewportWidth = document.documentElement.clientWidth;
         const viewportHeight = document.documentElement.clientHeight;
+        const scale = window.devicePixelRatio || 1;
+        const isMobile = isTouchDevice();
         
+        // Initialize base positions in logical pixels
         this.baseX = Math.random() * viewportWidth;
         this.baseY = Math.random() * viewportHeight;
-        this.x = this.baseX;
-        this.y = this.baseY;
-        this.size = Math.random() * (3 - this.layer * 0.5) + 1;
+        
+        // Set initial positions (will be scaled in update)
+        this.x = this.baseX * scale;
+        this.y = this.baseY * scale;
+        
+        // Adjust size based on device type and pixel ratio
+        const baseSize = Math.random() * (3 - this.layer * 0.5) + 1;
+        const sizeMultiplier = isMobile ? 0.25 : 1; // 4 times smaller on mobile
+        this.size = baseSize * scale * sizeMultiplier;
+        
         this.shape = Math.random() > 0.7 ? 'circle' : 'square';
         this.parallaxFactor = 0.1 + (this.layer * 0.3);
         this.angle = Math.random() * Math.PI * 2;
-        this.amplitude = Math.random() * 1.5 + 0.5;
+        
+        // Scale amplitude based on device pixel ratio
+        this.amplitude = (Math.random() * 1.5 + 0.5) * scale;
         
         // Store viewport dimensions for boundary checks
         this.viewportWidth = viewportWidth;
@@ -80,6 +130,7 @@ const Particles = () => {
       update(scrollDelta) {
         const viewportWidth = document.documentElement.clientWidth;
         const viewportHeight = document.documentElement.clientHeight;
+        const scale = window.devicePixelRatio || 1;
 
         // Update viewport dimensions if changed
         if (this.viewportWidth !== viewportWidth || this.viewportHeight !== viewportHeight) {
@@ -91,26 +142,30 @@ const Particles = () => {
         const targetScale = 1 + (scrollRef.current / viewportHeight) * 0.5;
         scaleRef.current += (targetScale - scaleRef.current) * 0.1;
 
-        // Calculate center point for scaling
-        const centerX = viewportWidth / 2;
-        const centerY = viewportHeight / 2;
+        // Calculate center point for scaling (in device pixels)
+        const centerX = (viewportWidth * scale) / 2;
+        const centerY = (viewportHeight * scale) / 2;
 
         // Apply scroll effect with smooth floating motion
         this.angle += this.speed * 0.02;
         
-        // Add floating motion
-        const floatX = Math.sin(this.angle) * this.amplitude;
-        const floatY = Math.cos(this.angle * 0.8) * this.amplitude;
+        // Add floating motion (scaled by device pixel ratio)
+        const floatX = Math.sin(this.angle) * this.amplitude * scale;
+        const floatY = Math.cos(this.angle * 0.8) * this.amplitude * scale;
 
-        // Calculate scaled position from center
-        const dx = this.baseX - centerX;
-        const dy = this.baseY - centerY;
+        // Calculate scaled position from center (in device pixels)
+        const dx = (this.baseX * scale) - centerX;
+        const dy = (this.baseY * scale) - centerY;
         const scaledX = centerX + dx * scaleRef.current;
         const scaledY = centerY + dy * scaleRef.current;
 
-        // Apply cursor parallax effect
-        const mouseParallaxX = mouseRef.current.x * 50 * (this.layer + 1);
-        const mouseParallaxY = mouseRef.current.y * 50 * (this.layer + 1);
+        // Apply cursor parallax effect only on non-touch devices
+        let mouseParallaxX = 0;
+        let mouseParallaxY = 0;
+        if (!isTouchRef.current) {
+          mouseParallaxX = mouseRef.current.x * 50 * (this.layer + 1) * scale;
+          mouseParallaxY = mouseRef.current.y * 50 * (this.layer + 1) * scale;
+        }
 
         // Update position with scaling, floating and mouse parallax
         this.x = scaledX + floatX * scaleRef.current + mouseParallaxX;
@@ -131,26 +186,25 @@ const Particles = () => {
         ctx.beginPath();
         ctx.globalCompositeOperation = 'lighter';
         
+        // Scale size by device pixel ratio
+        const adjustedSize = (this.currentSize || this.size) * scale;
+        
         // Create gradient for each particle
         const gradient = ctx.createRadialGradient(
           this.x, this.y, 0,
-          this.x, this.y, this.size * 2
+          this.x, this.y, adjustedSize * 2
         );
         gradient.addColorStop(0, this.color.replace('1)', `${this.opacity})`));
         gradient.addColorStop(1, this.color.replace('1)', '0)'));
         ctx.fillStyle = gradient;
-        
-        const scaledX = this.x / scale;
-        const scaledY = this.y / scale;
 
         if (this.shape === 'circle') {
-          ctx.arc(scaledX, scaledY, this.currentSize || this.size, 0, Math.PI * 2);
+          ctx.arc(this.x, this.y, adjustedSize, 0, Math.PI * 2);
         } else {
           ctx.save();
-          ctx.translate(scaledX, scaledY);
+          ctx.translate(this.x, this.y);
           ctx.rotate(this.angle);
-          const size = this.currentSize || this.size;
-          ctx.rect(-size/2, -size/2, size, size);
+          ctx.rect(-adjustedSize/2, -adjustedSize/2, adjustedSize, adjustedSize);
           ctx.restore();
         }
         
@@ -164,13 +218,24 @@ const Particles = () => {
       const viewportWidth = document.documentElement.clientWidth;
       const viewportHeight = document.documentElement.clientHeight;
       
-      // Calculate base particle count based on viewport area and pixel ratio
+      // Calculate base particle count based on viewport area
       const scale = window.devicePixelRatio || 1;
       const viewportArea = viewportWidth * viewportHeight;
+      // Adjust density based on device type
+      const densityFactor = isTouchDevice() ? 8000 : 12000;
       const baseParticles = Math.floor(Math.min(
-        Math.max(viewportArea / (12000 / scale), 20),
-        200
+        Math.max(viewportArea / densityFactor, 40),
+        isTouchDevice() ? 120 : 200
       ));
+
+      console.log('[Particles] Initialization:', {
+        viewportWidth,
+        viewportHeight,
+        scale,
+        viewportArea,
+        baseParticles,
+        canvasContext: ctx ? 'available' : 'null'
+      });
       
       // Clear existing particles
       particleLayers.forEach(layer => layer.length = 0);
@@ -181,23 +246,44 @@ const Particles = () => {
         for (let j = 0; j < layerParticles; j++) {
           layer.push(new Particle(i));
         }
+        console.log(`[Particles] Layer ${i} initialized with ${layerParticles} particles`);
       });
     };
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const currentScroll = window.scrollY;
-      const scrollDelta = currentScroll - scrollRef.current;
-      scrollRef.current = currentScroll;
+      if (!ctx) {
+        console.error('[Particles] Canvas context lost');
+        return;
+      }
 
-      particleLayers.forEach(layer => {
-        layer.forEach(particle => {
-          particle.update(scrollDelta);
-          particle.draw();
+      try {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const currentScroll = window.scrollY;
+        const scrollDelta = currentScroll - scrollRef.current;
+        scrollRef.current = currentScroll;
+
+        // Log first animation frame details
+        if (!window._hasLoggedFirstFrame) {
+          console.log('[Particles] First animation frame:', {
+            canvasWidth: canvas.width,
+            canvasHeight: canvas.height,
+            particleLayers: particleLayers.map(layer => layer.length),
+            devicePixelRatio: window.devicePixelRatio || 1
+          });
+          window._hasLoggedFirstFrame = true;
+        }
+
+        particleLayers.forEach(layer => {
+          layer.forEach(particle => {
+            particle.update(scrollDelta);
+            particle.draw();
+          });
         });
-      });
 
-      animationFrameId = requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
+      } catch (error) {
+        console.error('[Particles] Animation error:', error);
+      }
     };
 
     // Debounced resize handler
@@ -236,7 +322,7 @@ const Particles = () => {
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 1,
+        zIndex: isTouchRef.current ? 5 : 1, // Lower z-index on mobile
         pointerEvents: 'none',
         objectFit: 'cover',
         willChange: 'transform'

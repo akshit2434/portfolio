@@ -232,6 +232,7 @@
     height: 550px;
     position: relative;
     margin: 0 auto;
+    z-index: 2;
 }
 
 .profile-shape {
@@ -243,20 +244,20 @@
     border: 2px solid transparent;
     background:
         linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
-        linear-gradient(45deg, var(--accent-color), transparent) border-box;
+        linear-gradient(45deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.3)) border-box;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.1),
-        inset 0 0 20px rgba(245, 245, 220, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(var(--accent-color-rgb), 0.15);
 }
 
 .profile-shape:hover {
     box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.2),
-        inset 0 0 30px rgba(245, 245, 220, 0.08);
+        0 15px 40px rgba(0, 0, 0, 0.3),
+        inset 0 0 30px rgba(var(--accent-color-rgb), 0.25);
     background:
         linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
-        linear-gradient(45deg, var(--accent-color), rgba(245, 245, 220, 0.5)) border-box;
+        linear-gradient(45deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.6)) border-box;
 }
 
 .profile-shape img {
@@ -538,6 +539,15 @@
         display: none;
     }
 
+    .project-card .project-link {
+        display: none;
+    }
+
+    .project-card > div > div:last-child {
+        display: none !important;
+        margin-top: 0 !important;
+    }
+
     .hero-content {
         flex-direction: column-reverse;
         text-align: center;
@@ -570,18 +580,42 @@
         height: 400px;
         margin-top: calc(var(--nav-height) + 1rem);
         position: relative;
+        z-index: 10; /* Higher z-index for mobile to stay above particles */
     }
 
+    /* Gradient overlay for mobile */
     .profile-container::after {
         content: "";
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 30%;
+        height: 40%;
         background: linear-gradient(to bottom, transparent, var(--bg-color));
-        z-index: 1;
+        z-index: 12;
         pointer-events: none;
+    }
+
+    /* Override profile shape styles for mobile */
+    .profile-shape {
+        border: 2px solid var(--accent-color);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        background: var(--bg-color);
+        position: relative;
+        z-index: 11;
+    }
+
+    .profile-shape img {
+        position: relative;
+        z-index: 11;
+        opacity: 1 !important;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: var(--bg-color);
+    }
+
+    .profile-shape:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
     }
 
     .hero-section::after {

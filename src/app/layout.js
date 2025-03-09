@@ -17,6 +17,16 @@ export { metadata };
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={playfair.variable}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+          rel="stylesheet"
+          href="/_next/static/css/app/globals.css"
+          as="style"
+          importance="high"
+          fetchPriority="high"
+        />
+      </head>
       <body suppressHydrationWarning={true}>
         <LoadingProvider>
           <ThemeProvider>
