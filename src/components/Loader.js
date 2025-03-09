@@ -1,10 +1,24 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoading } from '../context/LoadingContext';
+import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Loader() {
   const { isLoading, progress, loadingComplete } = useLoading();
+  const { theme } = useTheme();
+  const [loaderTheme, setLoaderTheme] = useState('dark');
+
+  // Switch to user's theme after initial animation
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+      }, 600);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, theme]);
 
   useEffect(() => {
     if (isLoading) {

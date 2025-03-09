@@ -106,7 +106,7 @@ export default function HeroSection() {
                 lineHeight: 1.6
               }}
             >
-              CSE student at JIIT and Co Head Tech at <a href="https://insturance.org" target="_blank" style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>insturance</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
+              CSE student at JIIT and Co Head Tech at <a href="https://insturance.org" target="_blank" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>Insturance</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
             </p>
           </div>
 

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import * as d3 from 'd3';
+import { useTheme } from '../context/ThemeContext';
 
 const graphData = {
   nodes: [
@@ -75,8 +76,28 @@ const getColorByGroup = (group) => {
 };
 
 export default function ForceGraphSkills() {
+  const { theme } = useTheme();
   const containerRef = useRef(null);
   const svgRef = useRef(null);
+
+  const getTextColor = (group) => {
+    if (theme === 'light') {
+      // Keep text white for main category nodes
+      if (group === 'category') return '#fff';
+      // Make text black for all other nodes (full-stack, ai-ml, other)
+      return '#000';
+    }
+    // Dark theme - all text white
+    return '#fff';
+  };
+
+  // Update text colors when theme changes
+  useEffect(() => {
+    if (!svgRef.current) return;
+    d3.select(svgRef.current)
+      .selectAll('text')
+      .attr('fill', d => getTextColor(d.group));
+  }, [theme]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -165,10 +186,10 @@ export default function ForceGraphSkills() {
       });
     };
 
-    nodes.append('text')
+    const textNodes = nodes.append('text')
       .text(d => d.id)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#fff')
+      .attr('fill', d => getTextColor(d.group))
       .style('font-size', d => {
         const isMobile = width < 768;
         if (d.group === 'category') {
@@ -243,10 +264,10 @@ export default function ForceGraphSkills() {
       window.removeEventListener('resize', handleResize);
       simulation.stop();
     };
-  }, []);
+  }, [theme]);
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '600px' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '600px', userSelect: 'none' }}>
       <svg ref={svgRef}></svg>
     </div>
   );

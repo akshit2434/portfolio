@@ -16,7 +16,7 @@ export { metadata };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={playfair.variable}>
+    <html lang="en" className={playfair.variable} data-theme="dark">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
