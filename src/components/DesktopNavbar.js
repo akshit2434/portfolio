@@ -45,6 +45,7 @@ const DesktopNavbar = () => {
             <li key={section}>
               <a
                 href={`#${section}`}
+                className="cursor-hover"
                 style={{ textTransform: 'capitalize' }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -66,6 +67,7 @@ const DesktopNavbar = () => {
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          className="cursor-hover"
           style={{
             background: 'var(--glass-bg)',
             border: '1px solid var(--glass-border)',

@@ -488,13 +488,14 @@
     z-index: 9999;
     mix-blend-mode: difference;
     transform-origin: center center;
-    will-change: transform;
+    will-change: transform, width, height;
     backface-visibility: hidden;
     opacity: 1;
     transition:
         width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
         height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.15s ease-out;
+        opacity 0.15s ease-out,
+        transform 0.05s linear;
 }
 
 .custom-cursor.hidden {
@@ -513,10 +514,6 @@
 .custom-cursor.pointer {
     width: 30px;
     height: 30px;
-    transition:
-        width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-        height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.05s linear;
 }
 
 .custom-cursor.project-hover {

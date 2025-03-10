@@ -2,6 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 
+// Class name for elements that should trigger cursor size change
+const INTERACTIVE_CLASS = 'cursor-hover';
+
 const Cursor = () => {
   const [clicked, setClicked] = useState(false);
   const [isPointer, setIsPointer] = useState(false);
@@ -18,7 +21,6 @@ const Cursor = () => {
 
   useEffect(() => {
     let moveTimeout;
-    let lastTarget = null;
 
     const lerp = (start, end, factor) => start + (end - start) * factor;
     
@@ -45,15 +47,13 @@ const Cursor = () => {
       setMoving(true);
       clearTimeout(moveTimeout);
       moveTimeout = setTimeout(() => setMoving(false), 100);
-
-      const isTargetPointer = window.getComputedStyle(e.target).cursor === 'pointer';
-      if (isTargetPointer !== isPointer) {
-        setIsPointer(isTargetPointer);
-      }
     };
 
     const handleMouseDown = () => setClicked(true);
     const handleMouseUp = () => setClicked(false);
+
+    const handleInteractiveEnter = () => setIsPointer(true);
+    const handleInteractiveLeave = () => setIsPointer(false);
 
     const handleHideCursor = () => setHidden(true);
     const handleShowCursor = () => setHidden(false);
@@ -67,9 +67,42 @@ const Cursor = () => {
         clearTimeout(fadeTimeoutRef.current);
         fadeTimeoutRef.current = setTimeout(() => {
           setLastImage('');
-        }, 500); // Match fade-out duration
+        }, 500);
       }
     };
+
+    const handleMouseLeave = () => {
+      setClicked(false);
+      setIsPointer(false);
+      setMoving(false);
+      setHidden(false);
+    };
+
+    // Add mouseenter/mouseleave listeners to all interactive elements
+    const addInteractiveListeners = () => {
+      const elements = document.getElementsByClassName(INTERACTIVE_CLASS);
+      Array.from(elements).forEach(element => {
+        element.addEventListener('mouseenter', handleInteractiveEnter);
+        element.addEventListener('mouseleave', handleInteractiveLeave);
+      });
+    };
+
+    // Initial setup
+    addInteractiveListeners();
+
+    // Setup mutation observer to handle dynamically added elements
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.addedNodes.length) {
+          addInteractiveListeners();
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
 
     frameRef.current = requestAnimationFrame(animate);
 
@@ -79,18 +112,19 @@ const Cursor = () => {
     window.addEventListener('projectHover', handleProjectHover);
     window.addEventListener('hide-cursor', handleHideCursor);
     window.addEventListener('show-cursor', handleShowCursor);
-
-    const handleMouseLeave = () => {
-      setClicked(false);
-      setIsPointer(false);
-      setMoving(false);
-      setHidden(false);
-    };
-    
     window.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       cancelAnimationFrame(frameRef.current);
+      observer.disconnect();
+      
+      // Remove listeners from all interactive elements
+      const elements = document.getElementsByClassName(INTERACTIVE_CLASS);
+      Array.from(elements).forEach(element => {
+        element.removeEventListener('mouseenter', handleInteractiveEnter);
+        element.removeEventListener('mouseleave', handleInteractiveLeave);
+      });
+
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);

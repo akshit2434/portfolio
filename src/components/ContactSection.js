@@ -87,7 +87,7 @@ export default function ContactSection() {
               fontSize: '1.1rem',
               marginBottom: '0.5rem'
             }}>
-              <a href="mailto:akshit2434@gmail.com" className="link-highlight" style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>akshit2434@gmail.com</a>
+              <a href="mailto:akshit2434@gmail.com" className="link-highlight cursor-hover" style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>akshit2434@gmail.com</a>
             </p>
             <p style={{
               color: 'var(--text-color)',
@@ -103,7 +103,7 @@ export default function ContactSection() {
               href="https://github.com/akshit2434"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-link cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 background: 'var(--glass-bg)',
@@ -138,7 +138,7 @@ export default function ContactSection() {
               href="https://www.linkedin.com/in/akshit-singh-a137641a7/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-link cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 background: 'var(--glass-bg)',
@@ -175,7 +175,7 @@ export default function ContactSection() {
               href="https://www.instagram.com/thesc1enceguy/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-link cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 background: 'var(--glass-bg)',
@@ -212,7 +212,7 @@ export default function ContactSection() {
               href="https://t.me/thesc1enceguy"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-link cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 background: 'var(--glass-bg)',

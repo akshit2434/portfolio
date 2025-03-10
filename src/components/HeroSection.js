@@ -106,7 +106,7 @@ export default function HeroSection() {
                 lineHeight: 1.6
               }}
             >
-              CSE student at JIIT and Co Head Tech at <a href="https://insturance.org" target="_blank" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>Insturance</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
+              CSE student at JIIT and Co Head Tech at <a href="https://insturance.org" target="_blank" className="cursor-hover" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>Insturance</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function HeroSection() {
           >
             <a
               href="#work"
-              className="cta-button primary"
+              className="cta-button primary cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 background: 'var(--accent-color)',
@@ -151,7 +151,7 @@ export default function HeroSection() {
             </a>
             <a
               href="#contact"
-              className="cta-button secondary"
+              className="cta-button secondary cursor-hover"
               style={{
                 padding: '0.75rem 1.5rem',
                 border: '1px solid var(--accent-color)',

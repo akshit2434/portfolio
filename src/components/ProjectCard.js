@@ -19,12 +19,14 @@ export default function ProjectCard({ project }) {
     if (!isMobile) {
       setIsHovered(false);
       window.dispatchEvent(new CustomEvent('projectHover', { detail: { project: null } }));
+      // Dispatch a cursor reset event when leaving the project card
+      window.dispatchEvent(new CustomEvent('cursorReset'));
     }
   };
 
   return (
     <div
-      className={`project-card ${isHovered ? 'hovered' : ''}`}
+      className={`project-card cursor-hover ${isHovered ? 'hovered' : ''}`}
       onClick={handleInteraction}
       onMouseEnter={handleInteraction}
       onMouseLeave={handleMouseLeave}
@@ -102,7 +104,7 @@ export default function ProjectCard({ project }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="project-link"
+              className="project-link cursor-hover"
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '8px',
@@ -122,7 +124,7 @@ export default function ProjectCard({ project }) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="project-link"
+              className="project-link cursor-hover"
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '8px',

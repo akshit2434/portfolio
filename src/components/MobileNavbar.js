@@ -59,6 +59,7 @@ const MobileNavbar = () => {
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          className="cursor-hover"
           style={{
             background: 'var(--glass-bg)',
             border: '1px solid var(--glass-border)',
@@ -117,7 +118,7 @@ const MobileNavbar = () => {
           )}
         </button>
         <button
-          className="mobile-menu-toggle"
+          className="mobile-menu-toggle cursor-hover"
           onClick={handleMenuToggle}
           aria-label="Toggle menu"
           style={{
@@ -185,6 +186,7 @@ const MobileNavbar = () => {
                     setMenuVisible(false);
                     setTimeout(() => setIsMenuOpen(false), 300);
                   }}
+                  className="cursor-hover"
                   style={{ textTransform: 'capitalize' }}
                 >
                   {section}

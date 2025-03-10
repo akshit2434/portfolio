@@ -127,7 +127,7 @@ export default function ProjectsSection() {
         </div>
 
         <div
-          className="show-more-container"
+          className="show-more-container cursor-hover"
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -202,6 +202,7 @@ export default function ProjectsSection() {
             textAlign: 'center',
             opacity: 0
           }}
+          className='cursor-hover'
         >
           <a
             href="https://github.com/akshit2434"
