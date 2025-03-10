@@ -6,6 +6,7 @@ import { Playfair_Display } from 'next/font/google';
 import { metadata } from './metadata';
 import { Content } from '../components/Content';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
           </ThemeProvider>
         </LoadingProvider>
         <Analytics />
+        <SpeedInsights/>
       </body>
     </html>
   );
