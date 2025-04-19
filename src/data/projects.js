@@ -10,11 +10,11 @@ export const projects = [
   },
   {
     id: 2,
-    title: "INSTURANCE",
+    title: "INSTURIX",
     description: "A startup working to revolutionize the content creation industry. Working as Tech Co-Head to drive technological innovation.",
     technologies: ["Full Stack Development","Generative AI", "Team Management", "Product Development"],
-    image: "/projects/insturance/insturance.png",
-    liveUrl: "https://www.insturance.org",
+    image: "/projects/insturix/insturix.png",
+    liveUrl: "https://www.insturix.com",
     featured: true
   },
   {
