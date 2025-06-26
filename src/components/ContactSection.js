@@ -172,6 +172,37 @@ export default function ContactSection() {
               LinkedIn
             </a>
             <a
+              href="https://x.com/aks_2434"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link cursor-hover"
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: 'var(--glass-bg)',
+                border: '1px solid var(--glass-border)',
+                borderRadius: '8px',
+                color: 'var(--text-color)',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: 500,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="20"
+                height="20"
+                viewBox="0 0 1200 1227"
+                fill="currentColor"
+              >
+                <path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="currentColor"/>
+              </svg>
+              Twitter
+            </a>
+            <a
               href="https://www.instagram.com/thesc1enceguy/"
               target="_blank"
               rel="noopener noreferrer"

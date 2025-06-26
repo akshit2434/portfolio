@@ -193,6 +193,17 @@ const MobileNavbar = () => {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="https://drive.google.com/drive/folders/1xsYkqmzoC5zpmuMi3BG7hszVHQDi_P-e?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-hover"
+                style={{ textTransform: 'capitalize' }}
+              >
+                Resume
+              </a>
+            </li>
           </ul>
         </div>
       )}

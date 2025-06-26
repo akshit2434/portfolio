@@ -1,20 +1,20 @@
 export const projects = [
   {
     id: 1,
+    title: "INSTURIX",
+    description: "A startup working to revolutionize the content creation industry. Leading as CTO to drive all technological innovation. (Earlier known as Insturance)",
+    technologies: ["Full Stack Development","Generative AI", "Team Management", "Product Development"],
+    image: "/projects/insturix/insturix.png",
+    liveUrl: "https://www.insturix.com",
+    featured: true
+  },
+  {
+    id: 2,
     title: "GraphBot",
     description: "A bot which can generate as many graphs as needed, based on the user's queries. Built to explore various approaches towards agentic workflows and understand it from the root.",
     technologies: ["React", "Python", "Pydantic", "Pydantic-AI", "LangChain", "LangGraph"],
     image: "/projects/graphbot/graphbot.png",
     githubUrl: "https://github.com/akshit2434/GraphBot",
-    featured: true
-  },
-  {
-    id: 2,
-    title: "INSTURIX",
-    description: "A startup working to revolutionize the content creation industry. Working as Tech Co-Head to drive technological innovation.",
-    technologies: ["Full Stack Development","Generative AI", "Team Management", "Product Development"],
-    image: "/projects/insturix/insturix.png",
-    liveUrl: "https://www.insturix.com",
     featured: true
   },
   {

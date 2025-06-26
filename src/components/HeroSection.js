@@ -106,7 +106,7 @@ export default function HeroSection() {
                 lineHeight: 1.6
               }}
             >
-              CSE student at JIIT and Co Head Tech at <a href="https://insturix.com" target="_blank" className="cursor-hover" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>Insturix</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
+              CSE student at JIIT and CTO at <a href="https://insturix.com" target="_blank" className="cursor-hover" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>Insturix</a>. Currently exploring AI/ML while expanding knowledge across various tech domains.
             </p>
           </div>
 
@@ -148,6 +148,38 @@ export default function HeroSection() {
               }}
             >
               View Projects
+            </a>
+            <a
+              href="https://drive.google.com/drive/folders/1xsYkqmzoC5zpmuMi3BG7hszVHQDi_P-e?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-button secondary cursor-hover"
+              style={{
+                padding: '0.75rem 1.5rem',
+                border: '1px solid var(--accent-color)',
+                color: 'var(--accent-color)',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                fontWeight: 500,
+                fontSize: '1rem',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                gsap.to(e.currentTarget, {
+                  y: -2,
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  duration: 0.3
+                });
+              }}
+              onMouseLeave={(e) => {
+                gsap.to(e.currentTarget, {
+                  y: 0,
+                  boxShadow: 'none',
+                  duration: 0.3
+                });
+              }}
+            >
+              Resume
             </a>
             <a
               href="#contact"

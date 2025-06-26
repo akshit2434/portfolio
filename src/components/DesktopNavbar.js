@@ -64,6 +64,32 @@ const DesktopNavbar = () => {
             </li>
           ))}
         </ul>
+        <a
+          href="https://drive.google.com/drive/folders/1xsYkqmzoC5zpmuMi3BG7hszVHQDi_P-e?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta-button secondary cursor-hover"
+          style={{
+            padding: '0.5rem 1rem',
+            border: '1px solid var(--accent-color)',
+            color: 'var(--accent-color)',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            fontWeight: 500,
+            fontSize: '0.9rem',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'var(--accent-color)';
+            e.currentTarget.style.color = 'var(--bg-color)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = 'var(--accent-color)';
+          }}
+        >
+          Resume
+        </a>
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
